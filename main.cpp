@@ -23,10 +23,11 @@ int main(){
     das do cliente que realiza o aluguel e os dados do carro alugado com a hora e quantidades de dias mais dados adicionais
     qua foram necessarios", a variavel "cmhRaiz" indica o caminho raiz que sera adaptado de acordo com o local onde esta salvo o
     programa. Eu estou mais ou menos criando uma estrutuara igual a usado na prefeitura onde vc trabalha belli*/
-    char cmhCliente[]="\\clientes\\";
-    char cmhAluguel[]="\\aluguel\\";
-    char cmhCarro[]="\\clientes\\";
-    char cmhRaiz[]="c:\\Users\\Estevão\\Dcuments\\legalRentAACar\\bancoDados";
+    char cmhCliente[12]="\\clientes\\";
+    char cmhAluguel[11]="\\aluguel\\";
+    char cmhCarro[10]="\\carros\\";
+    char cmhRaiz[53]="c:\\Users\\Estevão\\Documents\\legalRentAACar\\bancoDados";
+    char raizAux[53];
 
   do{
       printf("\t|----- Legal Rent a Car -----|\n\n");
@@ -36,13 +37,19 @@ int main(){
       switch(opc){
          case 1:
               system("CLS");
-              strcat(cmhRaiz,cmhCliente);         
+              strcpy(raizAux,cmhRaiz);
+              strcat(cmhRaiz,cmhCliente);        
               cadastroCliente(cmhRaiz);
+              strcpy(cmhRaiz,raizAux);
+              printf("%s\n",cmhRaiz);
               break;
          case 2:
               system("CLS");
+              strcpy(raizAux,cmhRaiz);
               strcat(cmhRaiz,cmhCarro);
               cadastroCarro(cmhRaiz);
+              strcpy(cmhRaiz,raizAux);
+              printf("%s\n",cmhRaiz);
               break;
          case 3:
              rodando==0;
@@ -58,8 +65,9 @@ void cadastroCliente(char cmhRaiz[]){
      char nome[35],cpf[11],idade[3],data[9],hora[9],resposta[5];
      int opc2,parceiro,tamanho;
      char salvarNome[35]=("nome: "),salvarCPF[11]=("cpf: "),salvarIdade[10]=("idade: "),salvarDATA[20]=("data: "),salvarHORA[20]=("hora: ");
-     
-     printf("\t|----- Cadastro de usuario -----|\n\n");
+    
+     printf("\n%s\n",cmhRaiz);
+     printf("\n\t|----- Cadastro de usuario -----|\n\n");
      printf("Nome completo: ");
      scanf("%s",&nome);//%[^\n]s Faz com que o scanf só pare de ler ao teclarem ENTER
      printf("Cpf: ");
@@ -97,9 +105,12 @@ void cadastroCliente(char cmhRaiz[]){
      
      if(opc2 ==1){
          strcat(cmhRaiz,cpf);
-         arq = fopen(cmhRaiz,"w");//arquivo para o gradastro atual, o arquivo tera como nome o cpf do cliente
+         arq = fopen(cmhRaiz,"a");//arquivo para o gradastro atual, o arquivo tera como nome o cpf do cliente
          if(arq == NULL){
-             printf("Ocorreu um erro");
+             printf("Ocorreu um erro: %s",arq);
+             printf("\n%s\n",cmhRaiz);
+             system("PAUSE");
+             system("CLS");
          }else{
              strcat(salvarNome,strcat(nome,"\n")); // Concatena a string de formatação para salvar no arquivo e o nome da pessoa
              fprintf(arq,salvarNome); // Salvar o dado do usuario no arquivo
@@ -126,6 +137,7 @@ void cadastroCarro(char cmhRaiz[]){
      int opc;
      
      do{
+       printf("\n%s\n",cmhRaiz);
        printf("\t\t\t|--- Cadastro do Carro ---|\n\n");
        printf("Digite a Marca do carro:");
        scanf("%s",&marca);
@@ -139,17 +151,23 @@ void cadastroCarro(char cmhRaiz[]){
        scanf("%d",&opc);
      }while(opc!=1);
      strcat(cmhRaiz,modelo);
-     arq = fopen(cmhRaiz,"w");
-     
-     strcat(strMarca,strcat(marca,"\n"));
-     fprintf(arq,strMarca);//salva a marca do carro
-     strcat(strModelo,strcat(modelo,"\n"));
-     fprintf(arq,strModelo);//salva o modelo do carro
-     strcat(strValorDia,strcat(valorDia,"\n"));
-     fprintf(arq,strValorDia);
-     
-     fclose(arq);
-     printf("\n\tCARRO SALVO COM SUCESSO\n\n");
-     system("PAUSE");
-     system("CLS");
+     arq = fopen(cmhRaiz,"a");
+     if(arq==NULL){
+                   printf("OCORREU UM ERRO:%s",arq);
+                   system("PAUSE");
+                   system("CLS");
+     }else{
+           printf("\n%s\n",cmhRaiz);
+           strcat(strMarca,strcat(marca,"\n"));
+           fprintf(arq,strMarca);//salva a marca do carro
+           strcat(strModelo,strcat(modelo,"\n"));
+           fprintf(arq,strModelo);//salva o modelo do carro
+           strcat(strValorDia,strcat(valorDia,"\n"));
+           fprintf(arq,strValorDia);
+           
+           fclose(arq);
+           printf("\n\tCARRO SALVO COM SUCESSO\n\n");
+           system("PAUSE");
+           system("CLS");
+     }  
 }
