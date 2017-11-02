@@ -10,8 +10,6 @@
         Se você resolver algum problema, escreve aqui. 
         E atualiza com os problemas que você encontrou beleza?
         Problemas:
-        -Na hora de confirmar os dados, se for parceiro tem que aparecer SIM, e se não
-        aparecer NÃO (esta aparecendo numero)
         -Só esta salvando um usuario de cada vez
         -Precisa acrescentar a parte de visualizar os clientes ja cadastrados
 */
@@ -23,14 +21,13 @@ int main(){
     /*as variaveis a segui foram criados para montar "mais ou menos de banco de dados", onde cada registro tera seu 
     txt separados em pastas de acordo com o seu setor: cliente,carro,aluguel = "sera a pasta com o txt guardando os
     das do cliente que realiza o aluguel e os dados do carro alugado com a hora e quantidades de dias mais dados adicionais
-    qua foram necessarios", a variavel "cmhRaiz" indica o caminho raiz que sera adaptado de acordo com o computador que sera
-    execudado o programa. Eu estou mais ou menos criando uma estrutuara igual a usado na prefeitura onde vc trabalha belli*/
+    qua foram necessarios", a variavel "cmhRaiz" indica o caminho raiz que sera adaptado de acordo com o local onde esta salvo o
+    programa. Eu estou mais ou menos criando uma estrutuara igual a usado na prefeitura onde vc trabalha belli*/
     char cmhCliente[]="\\clientes\\";
     char cmhAluguel[]="\\aluguel\\";
     char cmhCarro[]="\\clientes\\";
-    char cmhRaiz[]="D:\\programas_c\\bancoDados";
+    char cmhRaiz[]="c:\\Users\\Estevão\\Dcuments\\legalRentAACar\\bancoDados";
 
-    //usuario = fopen("dados\\usuario.txt","a");
   do{
       printf("\t|----- Legal Rent a Car -----|\n\n");
       printf("Menu Principal:\n Escolha uma opcao:\n\n1- Cadastro de usuario\n2- cadastrar Carro\n4- Clientes cadastrados\n3- Sair\n");
@@ -44,7 +41,7 @@ int main(){
               break;
          case 2:
               system("CLS");
-              strcat(cmhRaiz,cmhCliente);
+              strcat(cmhRaiz,cmhCarro);
               cadastroCarro(cmhRaiz);
               break;
          case 3:
@@ -104,25 +101,20 @@ void cadastroCliente(char cmhRaiz[]){
          if(arq == NULL){
              printf("Ocorreu um erro");
          }else{
-             strcat(salvarNome, nome); // Concatena a string de formatação para salvar no arquivo e o nome da pessoa
-             fprintf(usuario,salvarNome); // Salvar o dado do usuario no arquivo
-             fprintf(usuario,"\n");
-             strcat(salvarCPF, cpf);
-             fprintf(usuario,salvarCPF);
-             fprintf(usuario,"\n");
-             strcat(salvarIdade, idade);
-             fprintf(usuario,salvarIdade);
-             fprintf(usuario,"\n");
-             strcat(salvarDATA, data);
-             fprintf(usuario,salvarDATA);
-             fprintf(usuario,"\n");
-             strcat(salvarHORA, hora);
-             fprintf(usuario,salvarHORA);
-             fprintf(usuario,"\n\n");
+             strcat(salvarNome,strcat(nome,"\n")); // Concatena a string de formatação para salvar no arquivo e o nome da pessoa
+             fprintf(arq,salvarNome); // Salvar o dado do usuario no arquivo
+             strcat(salvarCPF,strcat(cpf,"\n"));
+             fprintf(arq,salvarCPF);
+             strcat(salvarIdade,strcat(idade,"\n"));
+             fprintf(arq,salvarIdade);
+             strcat(salvarDATA,strcat(data,"\n"));
+             fprintf(arq,salvarDATA);
+             strcat(salvarHORA,strcat(hora,"\n"));
+             fprintf(arq,salvarHORA);
              
              fclose(arq);
              //char salvarNome[35]=("nome: "),salvarCPF[11]=("cpf: "),salvarIdade[10]=("idade: "),salvarDATA[20]=("data: "),salvarHORA[20]=("hora: ");
-             printf("\n\tUSUARIO SALVO COM SUCESSO\n\n");
+             printf("\n\tCLIENTE SALVO COM SUCESSO\n\n");
              system("PAUSE");
              system("CLS");
          }
@@ -130,23 +122,34 @@ void cadastroCliente(char cmhRaiz[]){
 }
 void cadastroCarro(char cmhRaiz[]){
      FILE *arq;
-     char marca[50],modelo[100];
-     float valorDia;
+     char marca[50],modelo[100],strMarca[]="marca:",strModelo[]="modelo:",strValorDia[]="diaria:",valorDia[10];
      int opc;
      
      do{
-       printf("\t\t\t|--- Cadastro do Carro ---|");
+       printf("\t\t\t|--- Cadastro do Carro ---|\n\n");
        printf("Digite a Marca do carro:");
        scanf("%s",&marca);
        printf("Digite o modelo do carro:");
        scanf("%s",&modelo);
        printf("Digite o valor da diaria do Carro:");
-       scanf("%f",&valorDia);
+       scanf("%s",&valorDia);
        
-       printf("Os dados estao corretos?\nMarca:%s\t| Modelo:%s\n| valor da diario:%f",marca,modelo,valorDia);
+       printf("Os dados estao corretos?\nMarca:%s\t| Modelo:%s\t| valor da diario:R$%s",marca,modelo,valorDia);
        printf("\n1-sim\n2-nao\n");
        scanf("%d",&opc);
      }while(opc!=1);
      strcat(cmhRaiz,modelo);
+     arq = fopen(cmhRaiz,"w");
      
+     strcat(strMarca,strcat(marca,"\n"));
+     fprintf(arq,strMarca);//salva a marca do carro
+     strcat(strModelo,strcat(modelo,"\n"));
+     fprintf(arq,strModelo);//salva o modelo do carro
+     strcat(strValorDia,strcat(valorDia,"\n"));
+     fprintf(arq,strValorDia);
+     
+     fclose(arq);
+     printf("\n\tCARRO SALVO COM SUCESSO\n\n");
+     system("PAUSE");
+     system("CLS");
 }
